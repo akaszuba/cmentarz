@@ -5,6 +5,29 @@
     </head>
 
     <body>
-        wyniki
+        <% if(zmarli) {%>
+        <table>
+            <tr>
+                <th>Imię</th>
+                <th>Nazwisko</th>
+                <th>Data Zgonu</th>
+                <th>Sektor</th>
+                <th>Nr Parceli</th>
+                <th>Mapa</th>
+            </tr>
+            <%zmarli.forEach(zmarly=>{ %>
+            <tr>
+                <td><%=zmarly.imie %></td>
+                <td><%=zmarly.nazwisko %></td>
+                <td><%=zmarly.data_zgonu %></td>
+                <td><%=zmarly.sektor %></td>
+                <td><%=zmarly.numer_parceli %></td>
+                <td><a href="#">Pokaż</a></td>
+            </tr>
+            <%}) %>
+        </table>
+        <%} %>
+
+        <a href="/">Powrót</a>
     </body>
 </http>

@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const app = express();
 
-//const db = mysql.createPool(process.env.CLEARDB_DATABASE_URL);
+const db = mysql.createPool(process.env.CLEARDB_DATABASE_URL);
 
 
 app.set('port', process.env.PORT);
@@ -23,13 +23,21 @@ var index = function (req, res) {
 
 var szukaj = function (req, res) {
 
-    var wyniki = [];
-    res.render('index',wyniki)
+    if (req.body.nazwisko) {
+        db.query(`select imie, nazwisko, DATE_FORMAT(data_zgonu,"%d.%m.%Y") as data_zgonu, sektor, numer_parceli from zmarli where UPPER(nazwisko) = UPPER('${req.body.nazwisko}')`, (err, result, fields) => {
+            if (err) throw err;
+            res.render('search', { zmarli: result })
+        });
+    } else {
+        res.render('error', { errorMessage: 'Nazwisko jest wymagane' })
+    }
+
 }
 
 app.get('/', index);
 app.post('/search', szukaj);
 
-app.listen(process.env.PORT,() => {
+
+app.listen(process.env.PORT, () => {
     console.log(`Server running on port: {process.env.PORT}`);
-  });
+});
