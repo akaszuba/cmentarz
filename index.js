@@ -24,10 +24,13 @@ var index = function (req, res) {
 var szukaj = function (req, res) {
 
     if (req.body.nazwisko) {
-        db.query(`select imie, nazwisko, DATE_FORMAT(data_zgonu,"%d.%m.%Y") as data_zgonu, sektor, numer_parceli from zmarli where UPPER(nazwisko) = UPPER('${req.body.nazwisko}')`, (err, result, fields) => {
-            if (err) throw err;
-            res.render('search', { zmarli: result })
-        });
+        db.query(
+            `select imie, nazwisko,  rok_zgonu as data_zgonu, sektor, numer_parceli ` +
+            `from zmarli where UPPER(nazwisko) = UPPER('${req.body.nazwisko}')`,
+            (err, result, fields) => {
+                if (err) throw err;
+                res.render('search', { zmarli: result })
+            });
     } else {
         res.render('error', { errorMessage: 'Nazwisko jest wymagane' })
     }
