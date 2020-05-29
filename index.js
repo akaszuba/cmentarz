@@ -25,8 +25,10 @@ var szukaj = function (req, res) {
 
     if (req.body.nazwisko) {
         db.query(
-            `select imie, nazwisko,  rok_zgonu as data_zgonu, sektor, numer_parceli ` +
-            `from zmarli where UPPER(nazwisko) = UPPER('${req.body.nazwisko}')`,
+            `select imie, nazwisko,  rok_zgonu, sektor, numer_parceli ` +
+            `from zmarli where UPPER(nazwisko) = UPPER('${req.body.nazwisko}')`
+            + ((req.body.imie != null && req.body.imie != "")? ` and UPPER(imie) = UPPER('${req.body.imie}')`:"")
+            + ((req.body.rok != null && req.body.rok != "")? ` and UPPER(rok_zgonu) = UPPER('${req.body.rok}')`:""),            
             (err, result, fields) => {
                 if (err) throw err;
                 res.render('search', { zmarli: result })
@@ -42,5 +44,5 @@ app.post('/search', szukaj);
 
 
 app.listen(process.env.PORT, () => {
-    console.log(`Server running on port: {process.env.PORT}`);
+    console.log(`Server running on port: ${process.env.PORT}`);
 });

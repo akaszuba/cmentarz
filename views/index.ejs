@@ -1,24 +1,26 @@
 <http>
 
     <head>
-
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     </head>
 
-    <body>
-        <form method="POST" action="/search">
-            <div>
-                <label for="imie">Imię:</label>
-                <input id="imie" name="imie" />
+    <body class="">
+        <form method="POST" class="col-md-6 offset-md-3" action="/search" style="margin-top:50px;">
+            <h3 class="text-center">Wyszukiwarka grobów</h3>
+
+            <div class="form-group">
+                <label for="imie" class="sr-only">Imię:</label>
+                <input id="imie" class="form-control" name="imie" placeholder="Imię" />
             </div>
-            <div>
-                <label for="nazwisko">Nazwisko:</label>
-                <input id="nazwisko" name="nazwisko" />
+            <div class="form-group">
+                <label for="nazwisko" class="sr-only">Nazwisko:</label>
+                <input id="nazwisko" class="form-control" name="nazwisko"  placeholder="Nazwisko"  required/>
             </div>
-            <div>
-                <label for="rok">Rok:</label>
-                <input id="rok" name="rok" />
+            <div class="form-group"> 
+                <label for="rok"class="sr-only">Rok:</label>
+                <input id="rok" class="form-control" name="rok"  placeholder="Rok zgonu"/>
             </div>
-            <input type="submit">
+            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Szukaj">
         </form>
     </body>
 </http>
