@@ -14,7 +14,8 @@
                 <th>Nazwisko</th>
                 <th>Rok Zgonu</th>
                 <th>Sektor</th>
-                <th>Nr Parceli</th>
+                <th>Rząd</th>
+                <th>Nr Grobu</th>
                 <th>Mapa</th>
             </tr>
             <%zmarli.forEach(zmarly=>{ %>
@@ -23,6 +24,7 @@
                 <td><%=zmarly.nazwisko %></td>
                 <td><%=zmarly.rok_zgonu %></td>
                 <td><%=zmarly.sektor %></td>
+                <td><%=zmarly.rzad %></td>
                 <td><%=zmarly.numer_parceli %></td>
                 <td><a href="#">Pokaż</a></td>
             </tr>
