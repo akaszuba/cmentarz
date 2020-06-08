@@ -1,40 +1,81 @@
 <http>
 
     <head>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+            integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
     </head>
 
     <body>
-        <div class="col-md-10 offset-md-1"style="margin-top:50px;">
-        <% if(zmarli.length) {%>
-        <table class="table table-striped ">
-            <tr>
-                <th>Imię</th>
-                <th>Nazwisko</th>
-                <th>Rok Zgonu</th>
-                <th>Sektor</th>
-                <th>Rząd</th>
-                <th>Nr Grobu</th>
-                <th>Mapa</th>
-            </tr>
-            <%zmarli.forEach(zmarly=>{ %>
-            <tr>
-                <td><%=zmarly.imie %></td>
-                <td><%=zmarly.nazwisko %></td>
-                <td><%=zmarly.rok_zgonu %></td>
-                <td><%=zmarly.sektor %></td>
-                <td><%=zmarly.rzad %></td>
-                <td><%=zmarly.numer_parceli %></td>
-                <td><a href="#">Pokaż</a></td>
-            </tr>
-            <%}) %>
-        </table>
-        <%} else {  %>
+        <div class="col-md-10 offset-md-1" style="margin-top:50px;">
+            <% if(zmarli.length) {%>
+            <table class="table table-striped ">
+                <tr>
+                    <th>Imię</th>
+                    <th>Nazwisko</th>
+                    <th>Rok Zgonu</th>
+                    <th>Sektor</th>
+                    <th>Rząd</th>
+                    <th>Nr Grobu</th>
+                    <th>Mapa</th>
+                </tr>
+                <%zmarli.forEach(zmarly=>{ %>
+                <tr>
+                    <td><%=zmarly.imie %></td>
+                    <td><%=zmarly.nazwisko %></td>
+                    <td><%=zmarly.rok_zgonu %></td>
+                    <td><%=zmarly.sektor %></td>
+                    <td><%=zmarly.rzad %></td>
+                    <td><%=zmarly.numer_parceli %></td>
+                    <td>
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#mapModal"
+                            data-sector-name="<%=zmarly.sektor %>">Pokaż</button>
+                    </td>
+                </tr>
+                <%}) %>
+            </table>
+            <%} else {  %>
             <h3>Nie znaleziono grobów dla podanych wartości.</h3>
-        <%} %>
+            <%} %>
 
-        <a href="/" class="btn btn-primary btn-block">Powrót</a>
-    </div>
-    </body>
+            <a href="/" class="btn btn-primary btn-block">Powrót</a>
+        </div>
+        <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Mapa</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                       <img id="map-img" src="" width="100%" />                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $('#mapModal').on('shown.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var sectorName = button.data('sector-name');
+            var modal = $(this)
+            modal.find('#map-img').attr('src', '/img/sektor_' + sectorName + '.png');
+
+        });
+    </script>
+    </body>    
 </http>
