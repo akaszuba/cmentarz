@@ -42,7 +42,7 @@ var szukaj = function (req, res) {
 var import_get = function (req, res) {
     res.render('import');
 };
-var import_post = function (req, res) {
+var import_post = async function (req, res) {
     if (req.body.password != process.env.ADMIN_PASS) {
         res.render('error', { errorMessage: 'Błędne hasło.' })
         return;
@@ -70,17 +70,33 @@ var import_post = function (req, res) {
         return;
     }
 
-    db.query('insert into zmarli (nazwisko,imie,rok_zgonu,sektor,rzad,numer_parceli) values (?)',
-        data,
-        (err, result, fields) => {
-            if (err) throw err;
-            res.render('error', { errorMessage: `Pomyślnie zaimportowano ${data.length} wierszy` });
-            return;
-        });
-
+    var affectedRows = 0;
+    data.map(record=>insertRecord(record)).reduce((prev,curr, index, arr)=>prev.then((gg)=>{
+        affectedRows +=1;
+        return curr;
+    }),Promise.resolve())
+    .then((tt)=>{ 
+        res.render('error', { errorMessage: `Pomyślnie zaimportowano ${affectedRows} wierszy` });
+    })
+    .catch((err)=>{
+        res.render('error', { errorMessage: `Błąd podczas importowania danych. ${err}` });
+    });       
 }
 
-var clearData = function(req,res){
+var insertRecord = function(recordData){
+    return new Promise((resolve,reject)=>{
+        var sql = mysql.format('insert into zmarli (nazwisko,imie,rok_zgonu,sektor,rzad,numer_parceli) values (?)', [recordData]);
+        db.query(sql,
+            (err, result, fields) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(result)
+            });
+    })
+}
+
+var clearData = function (req, res) {
     if (req.body.password != process.env.ADMIN_PASS) {
         res.render('error', { errorMessage: 'Błędne hasło.' })
         return;
@@ -99,7 +115,7 @@ app.get('/', index);
 app.post('/search', szukaj);
 app.get('/import', import_get);
 app.post('/import', import_post);
-app.post('/clear',clearData);
+app.post('/clear', clearData);
 app.listen(process.env.PORT, () => {
     console.log(`Server running on port: ${process.env.PORT}`);
 });
