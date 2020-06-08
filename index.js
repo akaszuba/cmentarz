@@ -26,9 +26,8 @@ var szukaj = function (req, res) {
     if (req.body.nazwisko) {
         db.query(
             `select imie, nazwisko,  rok_zgonu, sektor, rzad, numer_parceli ` +
-            `from zmarli where UPPER(nazwisko) = UPPER('${req.body.nazwisko}')`
-            + ((req.body.imie != null && req.body.imie != "") ? ` and UPPER(imie) = UPPER('${req.body.imie}')` : "")
-            + ((req.body.rok != null && req.body.rok != "") ? ` and UPPER(rok_zgonu) = UPPER('${req.body.rok}')` : ""),
+            `from zmarli where UPPER(nazwisko) like UPPER('${req.body.nazwisko}%')`
+            + ((req.body.imie != null && req.body.imie != "") ? ` and UPPER(imie) = UPPER('${req.body.imie}')` : ""),
             (err, result, fields) => {
                 if (err) throw err;
                 res.render('search', { zmarli: result })
