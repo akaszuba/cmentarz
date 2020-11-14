@@ -25,8 +25,9 @@ var szukaj = function (req, res) {
 
     if (req.body.nazwisko) {
         db.query(
-            `select imie, nazwisko,  rok_zgonu, sektor, rzad, numer_parceli ` +
-            `from zmarli where UPPER(nazwisko) like UPPER('${req.body.nazwisko}%')`
+            `select imie, nazwisko,  rok_zgonu, sektor, rzad, numer_parceli, oplata_do ` +
+            `from zmarli where UPPER(nazwisko) like UPPER('${req.body.nazwisko}%')
+            order by nazwisko, imie, rok_zgonu`
             + ((req.body.imie != null && req.body.imie != "") ? ` and UPPER(imie) = UPPER('${req.body.imie}')` : ""),
             (err, result, fields) => {
                 if (err) throw err;
@@ -47,7 +48,7 @@ var import_post = async function (req, res) {
         return;
     }
     if (!req.body.data) {
-        res.render('error', { errorMessage: 'Brak danych do zaimportowania.' })
+        res.render('error', { errorMessage: 'Brak danych do zaimportBowania.' })
         return;
     }
 
@@ -56,9 +57,12 @@ var import_post = async function (req, res) {
     req.body.data.split(/\r?\n/).forEach((line, i) => {
         if (line) {
             var cols = line.split(/\t/);
-            if (cols.length != 6) {
+            if (cols.length != 7) {
                 errors.push(i);
             } else {
+                if(isNaN(cols[6])){
+                    cols[6] = null;
+                }
                 data.push(cols);
             }
         }
@@ -84,7 +88,7 @@ var import_post = async function (req, res) {
 
 var insertRecord = function(recordData){
     return new Promise((resolve,reject)=>{
-        var sql = mysql.format('insert into zmarli (nazwisko,imie,rok_zgonu,sektor,rzad,numer_parceli) values (?)', [recordData]);
+        var sql = mysql.format('insert into zmarli (nazwisko,imie,rok_zgonu,sektor,rzad,numer_parceli,oplata_do) values (?)', [recordData]);
         db.query(sql,
             (err, result, fields) => {
                 if (err) {

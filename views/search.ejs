@@ -11,22 +11,24 @@
             <% if(zmarli.length) {%>
             <table class="table table-striped ">
                 <tr>
-                    <th>Imię</th>
                     <th>Nazwisko</th>
+                    <th>Imię</th>
                     <th>Rok Zgonu</th>
                     <th>Sektor</th>
                     <th>Rząd</th>
                     <th>Nr Grobu</th>
+                    <th>Opłacony Do</th>
                     <th>Mapa</th>
                 </tr>
                 <%zmarli.forEach(zmarly=>{ %>
                 <tr>
-                    <td><%=zmarly.imie %></td>
                     <td><%=zmarly.nazwisko %></td>
+                    <td><%=zmarly.imie %></td>
                     <td><%=zmarly.rok_zgonu %></td>
                     <td><%=zmarly.sektor %></td>
                     <td><%=zmarly.rzad %></td>
                     <td><%=zmarly.numer_parceli %></td>
+                    <td><%=zmarly.oplata_do || 'Brak opłaty' %></td>
                     <td>
                         <a href="javascript:void()" data-toggle="modal" data-target="#mapModal"
                             data-sector-name="<%=zmarly.sektor %>">Pokaż</button>
