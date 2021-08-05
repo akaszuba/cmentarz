@@ -63,6 +63,11 @@ var import_post = async function (req, res) {
                 if(isNaN(cols[6])){
                     cols[6] = null;
                 }
+
+                if(isNaN(cols[2])){
+                    cols[2] = null;
+                }
+
                 data.push(cols);
             }
         }
